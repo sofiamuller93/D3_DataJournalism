@@ -20,7 +20,8 @@ var svg = d3.select("#scatter")
 
 // Append an SVG group
 var chartGroup = svg.append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    .attr("transform", `translate(${margin.left}, ${margin.top})`)
+    //.classed("chart",true);
 
 // Load data from data.csv
 // Cross-Origin scripting error occurs in browser when reading directly from file://
@@ -56,7 +57,7 @@ function successHandle(healthData){
 
     // Create scale functions
     var xLinearScale = d3.scaleLinear()
-        .domain([20, d3.max(healthData, d => d.poverty)])
+        .domain([d3.min(healthData, d => d.poverty) -1, d3.max(healthData, d => d.poverty) + 1])
         .range([0, width]);
 
     var yLinearScale = d3.scaleLinear()
@@ -80,8 +81,8 @@ function successHandle(healthData){
         .attr("cx", d => xLinearScale(d.poverty))
         .attr("cy", d => yLinearScale(d.healthcare))
         .attr("r", "15")
-        .attr("fill", "pink")
-        .attr("oppacity", ".5");
+        .attr("oppacity", ".5")
+        .classed("stateCircle", true);
 }
 
 function errorHandle(error){
