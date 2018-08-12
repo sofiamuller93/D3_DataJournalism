@@ -1,4 +1,4 @@
-/*/ @TODO: YOUR CODE HERE!
+// @TODO: YOUR CODE HERE!
 var svgWidth = 960;
 var svgHeight = 500;
 var margin = {
@@ -13,7 +13,7 @@ var height = svgHeight - margin.top - margin.bottom;
 
 // Create an SVG wrapper, append an SVG group that will hold our chart,
 // and shift the latter by left and top margins.
-var svg = d3.select(".scatter")
+var svg = d3.select("#scatter")
     .append("svg")
     .attr("width", svgWidth)
     .attr("height", svgHeight);
@@ -35,7 +35,7 @@ function successHandle(healthData){
     // log a list of names
     //var names = healthData.map(data => data.name);
     
-    // Cast the numbers to number values
+    // Parse Data/Cast as numbers
     healthData.forEach(function(data) {
         data.poverty = +data.poverty;
         data.povertyMoe = +data.povertyMoe;
@@ -54,11 +54,36 @@ function successHandle(healthData){
         data.smokesHigh = +data.smokesHigh;
     });
 
+    // Create scale functions
     var xLinearScale = d3.scaleLinear()
         .domain([20, d3.max(healthData, d => d.poverty)])
+        .range([0, width]);
+
+    var yLinearScale = d3.scaleLinear()
+        .domain([0, d3.max(healthData, d => d.healthcare)])
         .range([height, 0])
+    
+    // Create axis functions
+    var bottomAxis = d3.axisBottom(xLinearScale);
+    var leftAxis = d3.axisLeft(yLinearScale);
+
+    // Append Axes to the chart
+    chartGroup.append("g")
+        .attr("transform", `translate(0, ${height})`)
+        .call(bottomAxis);
+    chartGroup.append("g")
+        .call(leftAxis);
+    chartGroup.selectAll("circle")
+        .data(healthData)
+        .enter()
+        .append("circle")
+        .attr("cx", d => xLinearScale(d.poverty))
+        .attr("cy", d => yLinearScale(d.healthcare))
+        .attr("r", "15")
+        .attr("fill", "pink")
+        .attr("oppacity", ".5");
 }
 
-/*function errorHandle(error){
+function errorHandle(error){
     return console.warn(error);
-}*/
+}
