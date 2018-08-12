@@ -1,30 +1,4 @@
-// Load data from data.csv
-// Cross-Origin scripting error occurs in browser when reading directly from file://
-// Solution: use a url to the file
-var url = "https://raw.githubusercontent.com/the-Coding-Boot-Camp-at-UT/UTAUS201804DATA2-Class-Repository-DATA/master/16-D3/HOMEWORK/Instructions/data/data.csv?token=AhmYUATyObv3_DJQGLdTTBTjmAL8REfpks5bd5HiwA%3D%3D"
-
-d3.csv(url).then(successHandle, errorHandle);
-
-function successHandle(healthData){
-    console.log(healthData);
-    
-    // log a list of names
-    var names = healthData.map(data => data.name);
-    // console.log("names", names);
-    
-    // Cast the hours value to a number for each piece of healthData
-    healthData.forEach(function(data) {
-        data.hours = +data.hours;
-        // console.log("Name:", data.name);
-        // console.log("Hours:", data.hours);
-    });
-}
-
-function errorHandle(error){
-    return console.warn(error);
-}
-
-// @TODO: YOUR CODE HERE!
+/*/ @TODO: YOUR CODE HERE!
 var svgWidth = 960;
 var svgHeight = 500;
 var margin = {
@@ -39,8 +13,7 @@ var height = svgHeight - margin.top - margin.bottom;
 
 // Create an SVG wrapper, append an SVG group that will hold our chart,
 // and shift the latter by left and top margins.
-var svg = d3
-    .select(".chart")
+var svg = d3.select(".scatter")
     .append("svg")
     .attr("width", svgWidth)
     .attr("height", svgHeight);
@@ -48,3 +21,44 @@ var svg = d3
 // Append an SVG group
 var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+// Load data from data.csv
+// Cross-Origin scripting error occurs in browser when reading directly from file://
+// Solution: use a url to the file
+var url = "https://raw.githubusercontent.com/the-Coding-Boot-Camp-at-UT/UTAUS201804DATA2-Class-Repository-DATA/master/16-D3/HOMEWORK/Instructions/data/data.csv?token=AhmYUATyObv3_DJQGLdTTBTjmAL8REfpks5bd5HiwA%3D%3D"
+
+d3.csv(url).then(successHandle, errorHandle);
+
+function successHandle(healthData){
+    console.log(healthData);
+    
+    // log a list of names
+    //var names = healthData.map(data => data.name);
+    
+    // Cast the numbers to number values
+    healthData.forEach(function(data) {
+        data.poverty = +data.poverty;
+        data.povertyMoe = +data.povertyMoe;
+        data.age = +data.age;
+        data.ageMoe = +data.ageMoe;
+        data.income = +data.income;
+        data.incomeMoe = +data.incomeMoe;
+        data.healthcare = +data.healthcare;
+        data.healthcareLow = +data.healthcareLow;
+        data.healthcareHigh = +data.healthcareHigh;
+        data.obesity = +data.obesity;
+        data.obesityLow = +data.obesityLow;
+        data.obesityHigh = +data.obesityHigh;
+        data.smokes = +data.smokes;
+        data.smokesLow = +data.smokesLow;
+        data.smokesHigh = +data.smokesHigh;
+    });
+
+    var xLinearScale = d3.scaleLinear()
+        .domain([20, d3.max(healthData, d => d.poverty)])
+        .range([height, 0])
+}
+
+/*function errorHandle(error){
+    return console.warn(error);
+}*/
