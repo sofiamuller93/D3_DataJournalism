@@ -1,7 +1,7 @@
 .aText {
   font-family: sans-serif;
   font-size: 16px;
-  text-anchor: middle;
+  /* text-anchor: middle; */
 }
 
 .active {
@@ -28,6 +28,7 @@
   font-family: sans-serif;
   fill: #fff;
   text-anchor: middle;
+  font-size: 10px;
 }
 
 .stateCircle {

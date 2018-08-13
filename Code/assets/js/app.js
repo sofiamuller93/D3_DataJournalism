@@ -1,11 +1,11 @@
 // @TODO: YOUR CODE HERE!
-var svgWidth = 960;
-var svgHeight = 500;
+var svgWidth = 700;
+var svgHeight = 600;
 var margin = {
     top: 20,
     right: 40,
     bottom: 80,
-    left: 100
+    left: 50
 };
 
 var width = svgWidth - margin.left - margin.right;
@@ -74,15 +74,42 @@ function successHandle(healthData){
         .call(bottomAxis);
     chartGroup.append("g")
         .call(leftAxis);
-    chartGroup.selectAll("circle")
+
+    // Append circles
+    var circles = chartGroup.selectAll("circle")
         .data(healthData)
         .enter()
         .append("circle")
         .attr("cx", d => xLinearScale(d.poverty))
         .attr("cy", d => yLinearScale(d.healthcare))
-        .attr("r", "15")
+        .attr("r", "10")
         .attr("oppacity", ".5")
         .classed("stateCircle", true);
+
+    // Append state text
+    chartGroup.append("g").selectAll("text")
+        .data(healthData)
+        .enter()
+        .append("text")
+        .text(function (d) {
+            return d.abbr;
+        })
+        .attr("dx", d => xLinearScale(d.poverty))
+        .attr("dy", d => yLinearScale(d.healthcare)+5)
+        .attr("class","stateText");
+
+    // Create Axes Labels
+    chartGroup.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x", 0 - (svgHeight / 2))
+        .attr("dy", "1em")
+        .attr("class", "aText")
+        .text("Lacks Healthcare (%)");
+	chartGroup.append("text")
+        .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
+        .attr("class", "aText")
+        .text("In Poverty (%)");
 }
 
 function errorHandle(error){
